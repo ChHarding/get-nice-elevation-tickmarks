@@ -47,23 +47,45 @@ min: -390  max:   76  range:  466  ticks: [-390, -300, -200, -100, 0, 76]
 
 ### How to use
 - in your code import the calculate_ticks function from the calculate_ticks module
-- if needed define your own dictionary and give to the function together with the data's min and max
+- if needed, define your own dictionary and give to the function together with the data's min and max
 - it will return a list of tickmark values that you can use with your plotting package.
 
-```
-from  calculate_ticks import calculate_ticks
-# get min/max of your data ...
-# make a plot of the elevation data as an image
-...
-my_step_sizes = { 10: 3,   
-                  100: 20,  
-                  500: 50,
-                  1000: 100}
+``` python
+from calculate_ticks import calculate_ticks
+import random
+import matplotlib.pyplot as plt 
 
-ticks = calculate_ticks(min, max, my_step_sizes)
+# get random min and max values
+elevmin = random.randint(-500, 6000)
+elevmax = elevmin + random.randint(100, 1000)   
 
-# Add a colorbar to the elevation raster with min and max elevation values
-cbar = fig.colorbar(imgplot, ax=ax1, format='%d', orientation='horizontal', 
-                        pad=0.1,ticks=ticks, shrink=1)
-...
+# generate 100 random values between min and max
+elevs = [random.randint(elevmin, elevmax) for _ in range(1000)]
+
+# depending on the range of the values, how many steps should be used?
+step_sizes = {
+        10: 2,
+        50: 10,   
+        100: 25,  
+        250: 50,
+        500: 100,
+        1000: 250,
+        2500: 500,
+        5000: 1000,
+        10000: 5000,
+    }
+
+# calculate the tickmarks
+ticks = calculate_ticks(elevmin, elevmax)
+print(f"min: {elevmin:4d}  max: {elevmax:4d}  range: {elevmax-elevmin:4d}", " ticks:", ticks)
+
+# create a histogram from elevs
+import matplotlib.pyplot as plt
+plt.hist(elevs)
+plt.title(f"Elevation histogram")
+plt.xlabel("Elevation")
+plt.ylabel("Count")
+plt.xlim(elevmin, elevmax)
+plt.show()
 ```
+
