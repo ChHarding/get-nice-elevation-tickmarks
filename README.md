@@ -88,4 +88,5 @@ plt.ylabel("Count")
 plt.xlim(elevmin, elevmax)
 plt.show()
 ```
+![image](https://github.com/user-attachments/assets/f8c7f38b-7962-48df-8568-147040b9135b)
 
